@@ -23,7 +23,7 @@ jobs:
           version: stable
 
       - run: forge --version
-      - run: forge install foundry-rs/forge-std@v1.16.1 --no-commit
+      - run: forge install foundry-rs/forge-std@v1.16.1
       - run: forge build --sizes
       - run: forge test -vvv
 
