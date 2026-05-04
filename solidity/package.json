@@ -1,0 +1,25 @@
+{
+	"name": "@vattelum/document-registry",
+	"version": "0.1.0-pre",
+	"description": "Vattelum Document References — Solidity wire format and read interface for citing, resolving, and verifying documents and contracts across on-chain registries.",
+	"license": "MIT",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/vattelum/document-registry.git",
+		"directory": "solidity"
+	},
+	"files": [
+		"src",
+		"README.md",
+		"LICENSE"
+	],
+	"keywords": [
+		"ethereum",
+		"solidity",
+		"foundry",
+		"registry",
+		"document",
+		"vattelum",
+		"erc"
+	]
+}

@@ -1,0 +1,49 @@
+{
+	"name": "@vattelum/document-registry-js",
+	"version": "0.1.0-pre",
+	"description": "Reference implementation of the Vattelum Document References standard (JavaScript / TypeScript).",
+	"license": "MIT",
+	"type": "module",
+	"main": "dist/document-registry.js",
+	"types": "dist/document-registry.d.ts",
+	"exports": {
+		".": {
+			"types": "./dist/document-registry.d.ts",
+			"import": "./dist/document-registry.js"
+		}
+	},
+	"files": [
+		"dist",
+		"src",
+		"README.md",
+		"LICENSE"
+	],
+	"engines": {
+		"node": ">=18"
+	},
+	"scripts": {
+		"build": "tsc",
+		"prepublishOnly": "npm run build && npm test",
+		"test": "node --test test/document-registry.test.ts"
+	},
+	"dependencies": {
+		"@noble/hashes": "^1.5.0"
+	},
+	"devDependencies": {
+		"typescript": "^5.6.0"
+	},
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/vattelum/document-registry.git",
+		"directory": "js"
+	},
+	"keywords": [
+		"ethereum",
+		"registry",
+		"document",
+		"vattelum",
+		"citation",
+		"sha256",
+		"reference"
+	]
+}
