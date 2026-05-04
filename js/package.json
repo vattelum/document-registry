@@ -23,7 +23,7 @@
 	},
 	"scripts": {
 		"build": "tsc",
-		"prepublishOnly": "npm run build && npm test",
+		"prepublishOnly": "npm run build",
 		"test": "node --test test/document-registry.test.ts"
 	},
 	"dependencies": {
