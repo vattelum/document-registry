@@ -186,6 +186,11 @@ The content hash is the integrity anchor. Procedure:
 
 The same-input-same-output property is the load-bearing interop guarantee.
 
+The JS package ships `stripFrontmatter` as the canonical YAML-frontmatter strip
+step — drop-in for callers that want a shared implementation rather than rolling
+their own, removing the risk of two consumers diverging on the strip rule and
+producing different hashes for the same logical body.
+
 ### Citation format
 
 ```
@@ -215,6 +220,10 @@ Frozen rules:
    joined by `, `.
 6. **Truncation rule** (when displays require it): addresses use first 6 +
    last 4 hex chars; hashes use first 6 + last 2.
+
+The JS package ships `formatDate(ts)` as a standalone helper that produces the
+same `DD Mon YYYY` UTC form, for callers that need the date outside a full
+citation (e.g. lifecycle timestamps in a verification appendix).
 
 ### Resolution protocol
 

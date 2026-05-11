@@ -5,6 +5,8 @@ import {
 	formatCitation,
 	resolveStatus,
 	toChecksumAddress,
+	stripFrontmatter,
+	formatDate,
 	RELATION_AMENDS,
 	RELATION_REVISES,
 	RELATION_REPEALS,
@@ -369,4 +371,64 @@ test('resolveStatus — unknown relationType tolerated as informational', () => 
 		[2n, [{ ...makeRef(99) }]]
 	]);
 	assert.equal(resolveStatus(TARGET, history, refs, 1000n), 'In Force');
+});
+
+// ─── Frontmatter Strip ─────────────────────────────────────────────────
+test('stripFrontmatter — strips block with \\n line endings', () => {
+	const input = '---\ntitle: X\nversion: 1\n---\n\n# Body\nText here';
+	assert.equal(stripFrontmatter(input), '# Body\nText here');
+});
+
+test('stripFrontmatter — strips block with \\r\\n line endings', () => {
+	const input = '---\r\ntitle: X\r\nversion: 1\r\n---\r\n\r\n# Body\r\nText here';
+	assert.equal(stripFrontmatter(input), '# Body\r\nText here');
+});
+
+test('stripFrontmatter — passes through input with no frontmatter (modulo leading whitespace)', () => {
+	const input = '\n# Body\nText here';
+	assert.equal(stripFrontmatter(input), '# Body\nText here');
+});
+
+test('stripFrontmatter — body containing internal --- lines is not over-stripped', () => {
+	const input = '---\ntitle: X\n---\n\n# Body\nFirst section.\n\n---\n\n# Second section\nMore text';
+	assert.equal(stripFrontmatter(input), '# Body\nFirst section.\n\n---\n\n# Second section\nMore text');
+});
+
+test('stripFrontmatter — trims leading whitespace after strip', () => {
+	const input = '---\ntitle: X\n---\n\n\n   \n# Body';
+	assert.equal(stripFrontmatter(input), '# Body');
+});
+
+test('stripFrontmatter — empty input', () => {
+	assert.equal(stripFrontmatter(''), '');
+});
+
+// ─── Date Format ───────────────────────────────────────────────────────
+test('formatDate — number input', () => {
+	// 2025-05-03 12:00:00 UTC
+	assert.equal(formatDate(1746273600), '03 May 2025');
+});
+
+test('formatDate — bigint input', () => {
+	assert.equal(formatDate(1746273600n), '03 May 2025');
+});
+
+test('formatDate — single-digit day padded', () => {
+	// 2025-01-01 00:00:00 UTC
+	assert.equal(formatDate(1735689600), '01 Jan 2025');
+});
+
+test('formatDate — epoch zero', () => {
+	assert.equal(formatDate(0), '01 Jan 1970');
+});
+
+test('formatDate — December (month index 11)', () => {
+	// 2025-12-15 12:00:00 UTC
+	assert.equal(formatDate(1765800000), '15 Dec 2025');
+});
+
+test('formatDate — UTC rendering at midnight-UTC boundary', () => {
+	// 2025-05-04 00:00:00 UTC — in negative-UTC-offset timezones a local-time
+	// renderer would print "03 May 2025" instead.
+	assert.equal(formatDate(1746316800), '04 May 2025');
 });

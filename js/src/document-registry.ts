@@ -224,3 +224,41 @@ export function resolveStatus(
 
 	return best;
 }
+
+// ─── Frontmatter Strip ─────────────────────────────────────────────────
+/**
+ * Strip the leading YAML frontmatter block (between `---` delimiters) and
+ * trim leading whitespace from a markdown document body.
+ *
+ * Cross-platform: matches both `\n` and `\r\n` line endings. Only the
+ * leading frontmatter block is removed; `---` separators inside the body
+ * (e.g. horizontal rules) are preserved.
+ *
+ * Load-bearing for the content-hash chain: the canonical hash is computed
+ * over the body AFTER frontmatter strip and whitespace trim. Two consumers
+ * disagreeing about whether to strip the frontmatter would compute different
+ * hashes for the same logical document. Shipping a single implementation
+ * here makes that disagreement structurally impossible.
+ */
+export function stripFrontmatter(content: string): string {
+	const match = content.match(/^---\r?\n[\s\S]*?\r?\n---\s*/);
+	return (match ? content.slice(match[0].length) : content).replace(/^\s+/, '');
+}
+
+// ─── Date Format ───────────────────────────────────────────────────────
+/**
+ * Format a Unix timestamp (seconds) as `"DD Mon YYYY"` in UTC.
+ *
+ * UTC matches `formatCitation` — two implementations in different timezones
+ * produce byte-identical date strings for the same on-chain timestamp,
+ * which is the load-bearing property at midnight-UTC edge cases. Local-time
+ * rendering is intentionally not provided.
+ *
+ * Accepts either `number` or `bigint` for ergonomic interop with viem
+ * reads (which return `bigint` for `uint256` timestamps).
+ */
+export function formatDate(ts: number | bigint): string {
+	const d = new Date(Number(ts) * 1000);
+	const day = String(d.getUTCDate()).padStart(2, '0');
+	return `${day} ${MONTHS[d.getUTCMonth()]} ${d.getUTCFullYear()}`;
+}

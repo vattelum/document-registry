@@ -49,7 +49,9 @@ const status = resolveStatus(target, history, referencesByVersion, asOf);
 | Export                | Purpose                                                                |
 |-----------------------|------------------------------------------------------------------------|
 | `hashBody`            | SHA-256 of trimmed UTF-8 body. Frozen forever — every conforming impl produces the same digest. |
+| `stripFrontmatter`    | Strip the leading YAML frontmatter block (`---` … `---`) and leading whitespace from a markdown body. Cross-platform line endings. Feeds `hashBody` on the canonical content-hash chain. |
 | `formatCitation`      | Canonical printed citation. UTC date, EIP-55 address, optional `§<targetSection>`. |
+| `formatDate`          | Format a Unix timestamp (seconds, number or bigint) as `"DD Mon YYYY"` in **UTC** — same date form `formatCitation` emits, available standalone for callers that need the date outside a full citation. |
 | `resolveStatus`       | Status from on-chain reference graph at observer time `asOf`.          |
 | `toChecksumAddress`   | EIP-55 mixed-case checksum (used by `formatCitation`; exported for callers that need it directly). |
 | `DocumentReference`, `Document` | Type aliases mirroring the Solidity structs.                |

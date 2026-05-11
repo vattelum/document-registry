@@ -1,6 +1,6 @@
 {
 	"name": "@vattelum/document-registry-js",
-	"version": "0.1.0-pre",
+	"version": "0.2.0-pre",
 	"description": "Reference implementation of the Vattelum Document References standard (JavaScript / TypeScript).",
 	"license": "MIT",
 	"type": "module",
